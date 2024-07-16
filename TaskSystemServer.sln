@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskSystemServer", "TaskSystemServer.csproj", "{EB811DEE-5E5A-4823-B996-A1322EC61A31}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB811DEE-5E5A-4823-B996-A1322EC61A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB811DEE-5E5A-4823-B996-A1322EC61A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB811DEE-5E5A-4823-B996-A1322EC61A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB811DEE-5E5A-4823-B996-A1322EC61A31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {629CF352-77EF-4C52-8ABD-92A60E29925E}
+	EndGlobalSection
+EndGlobal

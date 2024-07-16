@@ -1,0 +1,37 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\mahdi\\Documents\\My\\Full Stack\\TaskManagementSystem\\TaskSystemServer\\TaskSystemServer\\wwwroot\\uploads\\18.jpg",
+      "PackagePath": "staticwebassets\\uploads\\18.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mahdi\\Documents\\My\\Full Stack\\TaskManagementSystem\\TaskSystemServer\\TaskSystemServer\\wwwroot\\uploads\\20.jpg",
+      "PackagePath": "staticwebassets\\uploads\\20.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mahdi\\Documents\\My\\Full Stack\\TaskManagementSystem\\TaskSystemServer\\TaskSystemServer\\wwwroot\\uploads\\21.jpg",
+      "PackagePath": "staticwebassets\\uploads\\21.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mahdi\\Documents\\My\\Full Stack\\TaskManagementSystem\\TaskSystemServer\\TaskSystemServer\\wwwroot\\uploads\\24.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\24.jpeg"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.TaskSystemServer.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.TaskSystemServer.props",
+      "PackagePath": "build\\TaskSystemServer.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.TaskSystemServer.props",
+      "PackagePath": "buildMultiTargeting\\TaskSystemServer.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.TaskSystemServer.props",
+      "PackagePath": "buildTransitive\\TaskSystemServer.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
