@@ -32,7 +32,8 @@ namespace TaskSystemServer.Service
                     // Perform in-memory filtering
                     var upcomingTasks = tasks.Where(e => e.Date.HasValue &&
                                                             e.RemindBeforeHours.HasValue &&
-                                                            e.DueDate.Value.Subtract(TimeSpan.FromHours(e.RemindBeforeHours.Value)) <= now)
+                                                            e.DueDate.Value.Subtract(TimeSpan.FromHours(e.RemindBeforeHours.Value)) <= now
+                                                            && (e.IsReminded == false || e.IsReminded == null))
                                                .ToList();
                     foreach (var task in upcomingTasks)
                     {
@@ -44,7 +45,7 @@ namespace TaskSystemServer.Service
 
                             await _emailService.SendEmailAsync(user.Email, subject, message);
                         }
-                        task.RemindBeforeHours = null;
+                        task.IsReminded = true;
                     }
                     await _context.SaveChangesAsync();
                 }

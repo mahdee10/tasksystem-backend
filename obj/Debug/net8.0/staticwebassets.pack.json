@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\uploads\\24.jpeg"
     },
     {
+      "Id": "C:\\Users\\mahdi\\Documents\\My\\Full Stack\\TaskManagementSystem\\TaskSystemServer\\TaskSystemServer\\wwwroot\\uploads\\25.webp",
+      "PackagePath": "staticwebassets\\uploads\\25.webp"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.TaskSystemServer.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

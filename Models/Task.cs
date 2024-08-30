@@ -24,6 +24,7 @@ public partial class Task
     public TimeSpan? Duration { get; set; }
 
     public string? PriorityLevel { get; set; }
+    public bool? IsReminded { get; set; }
 
     public virtual Member Member { get; set; } = null!;
 }

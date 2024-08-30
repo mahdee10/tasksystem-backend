@@ -17,7 +17,9 @@ namespace TaskSystemServer.Mappers
                 Duration = task.Duration,
                 PriorityLevel = task.PriorityLevel,
                 IsDone = task.IsDone,
-                RemindBeforeHours = task.RemindBeforeHours
+                RemindBeforeHours = task.RemindBeforeHours,
+                IsReminded = task.IsReminded,
+                
             };
 
         }

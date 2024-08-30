@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskSystemServer.Dtos.Event;
 using TaskSystemServer.Dtos.Task;
 using TaskSystemServer.Extentions;
+using TaskSystemServer.Helpers;
 using TaskSystemServer.Interfaces;
 using TaskSystemServer.Mappers;
 
@@ -32,10 +33,10 @@ namespace TaskSystemServer.Controllers
 
         [HttpGet("mytasks")]
         [Authorize]
-        public async Task<IActionResult> GetTasks()
+        public async Task<IActionResult> GetTasks([FromQuery] QueryObject query)
         {
             var memberId = User.GetMemberId();
-            var tasks = await _taskRepo.GetByIdAsync(int.Parse(memberId));
+            var tasks = await _taskRepo.GetByIdAsync(int.Parse(memberId), query);
             return Ok(tasks.Select(t => t.ToTaskDto()));
         }
 

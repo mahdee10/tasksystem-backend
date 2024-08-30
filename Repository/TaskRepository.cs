@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using TaskSystemServer.Data;
 using TaskSystemServer.Dtos.Event;
 using TaskSystemServer.Dtos.Task;
+using TaskSystemServer.Helpers;
 using TaskSystemServer.Interfaces;
 using TaskSystemServer.Models;
 
@@ -42,9 +43,15 @@ namespace TaskSystemServer.Repository
             return await _context.Tasks.FindAsync(id);
         }
 
-        public async Task<List<Models.Task>> GetByIdAsync(int id)
+        public async Task<List<Models.Task>> GetByIdAsync(int id, QueryObject query)
         {
-            return await _context.Tasks.Where(e => e.MemberId == id).ToListAsync();
+            var tasks=  _context.Tasks.Where(e => e.MemberId == id).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Title))
+            {
+                tasks = tasks.Where(d => d.Title.StartsWith(query.Title));
+            }
+            return await tasks.ToListAsync();
         }
 
         public async Task<Models.Task?> UpdateAsync(int id, UpdateTaskDto task)

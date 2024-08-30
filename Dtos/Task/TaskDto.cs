@@ -20,5 +20,7 @@
 
         public string? PriorityLevel { get; set; }
 
+        public bool? IsReminded { get; set; }
+
     }
 }

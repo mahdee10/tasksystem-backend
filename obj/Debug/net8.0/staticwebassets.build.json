@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "w6QFujNe7/Ub64XOa8M3hnSnxKVmE0cmB27LU9KgJNo=",
+  "Hash": "tC2B0d3R1WnZ4cfBSSVnNyLrhul7BQq06FGRbjUTE5o=",
   "Source": "TaskSystemServer",
   "BasePath": "_content/TaskSystemServer",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\24.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\mahdi\\Documents\\My\\Full Stack\\TaskManagementSystem\\TaskSystemServer\\TaskSystemServer\\wwwroot\\uploads\\25.webp",
+      "SourceId": "TaskSystemServer",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mahdi\\Documents\\My\\Full Stack\\TaskManagementSystem\\TaskSystemServer\\TaskSystemServer\\wwwroot\\",
+      "BasePath": "_content/TaskSystemServer",
+      "RelativePath": "uploads/25.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\25.webp"
     }
   ]
 }
