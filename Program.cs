@@ -9,13 +9,12 @@ using TaskSystemServer.Models;
 using TaskSystemServer.Repository;
 using TaskSystemServer.Service;
 using TaskSystemServer.Settings;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
@@ -44,14 +43,10 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+// Use PostgreSQL
 builder.Services.AddDbContext<TasksystemContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    // Use PostgreSQL instead of MySQL
     options.UseNpgsql(connectionString);
 });
 
@@ -66,12 +61,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme =
-    options.DefaultChallengeScheme =
-    options.DefaultForbidScheme =
-    options.DefaultScheme =
-    options.DefaultSignInScheme =
-    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -79,12 +70,12 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
         ValidateAudience = true,
-        ClockSkew = TimeSpan.Zero,
-        ValidateLifetime = true,
         ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
         IssuerSigningKey = new SymmetricSecurityKey(
             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
-            )
+        )
     };
 });
 
@@ -119,40 +110,43 @@ builder.Services.AddCors(option =>
 
 var app = builder.Build();
 
-// Ensure roles exist on startup
+// 🔧 Optional: Log incoming requests for debugging
+app.Use(async (context, next) =>
+{
+    Console.WriteLine($"Incoming request: {context.Request.Method} {context.Request.Path}");
+    await next();
+});
+
+// 🚀 Seed roles at startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-
-    // Seed roles if they do not exist
     await SeedRoles(roleManager);
 }
 
 async System.Threading.Tasks.Task SeedRoles(RoleManager<IdentityRole> roleManager)
 {
-    string[] roleNames = { "USER", "ADMIN", "MODERATOR" }; // Add your roles here
+    string[] roleNames = { "USER", "ADMIN", "MODERATOR" };
 
     foreach (var roleName in roleNames)
     {
-        var roleExist = await roleManager.RoleExistsAsync(roleName);
-        if (!roleExist)
+        var exists = await roleManager.RoleExistsAsync(roleName);
+        if (!exists)
         {
-            var role = new IdentityRole(roleName);
-            await roleManager.CreateAsync(role);
+            await roleManager.CreateAsync(new IdentityRole(roleName));
         }
     }
 }
 
-// Configure the HTTP request pipeline.
+// 🔧 Swagger and HTTPS redirection only in development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors();
