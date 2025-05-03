@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskSystemServer.Data;
 
 #nullable disable
@@ -12,37 +12,35 @@ using TaskSystemServer.Data;
 namespace TaskSystemServer.Migrations
 {
     [DbContext(typeof(TasksystemContext))]
-    [Migration("20240703101919_sad")]
-    partial class sad
+    [Migration("20250503185459_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseCollation("utf8mb4_0900_ai_ci")
-                .HasAnnotation("ProductVersion", "8.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -51,39 +49,25 @@ namespace TaskSystemServer.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "354801ed-ac7c-4407-a3d4-57c48220af63",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "69542378-87d9-4059-8b8f-4276ac5deb22",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -96,19 +80,19 @@ namespace TaskSystemServer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -120,17 +104,17 @@ namespace TaskSystemServer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -142,10 +126,10 @@ namespace TaskSystemServer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -157,16 +141,16 @@ namespace TaskSystemServer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -176,54 +160,54 @@ namespace TaskSystemServer.Migrations
             modelBuilder.Entity("TaskSystemServer.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -241,238 +225,206 @@ namespace TaskSystemServer.Migrations
                 {
                     b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("eventId");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EventId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EventId"));
 
                     b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime")
+                        .HasColumnType("timestamp")
                         .HasColumnName("date");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<bool?>("IsReminded")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<int>("MemberId")
-                        .HasColumnType("int")
-                        .HasColumnName("memberId");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("RemindBeforeHours")
-                        .HasColumnType("int")
-                        .HasColumnName("remindBeforeHours");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.HasKey("EventId")
-                        .HasName("PRIMARY");
+                    b.HasKey("EventId");
 
-                    b.HasIndex(new[] { "MemberId" }, "memberId");
+                    b.HasIndex("MemberId");
 
-                    b.ToTable("event", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("TaskSystemServer.Models.Globalevent", b =>
                 {
                     b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("eventId");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EventId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EventId"));
 
                     b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime")
+                        .HasColumnType("timestamp")
                         .HasColumnName("date");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.HasKey("EventId")
-                        .HasName("PRIMARY");
+                    b.HasKey("EventId");
 
-                    b.ToTable("globalevent", (string)null);
+                    b.ToTable("Globalevents");
                 });
 
             modelBuilder.Entity("TaskSystemServer.Models.Member", b =>
                 {
                     b.Property<int>("MemberId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("memberId");
+                        .HasColumnType("integer");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("MemberId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MemberId"));
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("text");
 
                     b.Property<DateOnly?>("Dob")
-                        .HasColumnType("date")
-                        .HasColumnName("dob");
+                        .HasColumnType("date");
 
                     b.Property<bool?>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("isActive")
-                        .HasDefaultValueSql("'1'");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(25)
-                        .HasColumnType("varchar(25)")
-                        .HasColumnName("name");
+                        .HasColumnType("text");
 
                     b.Property<string>("Timezone")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("timezone");
+                        .HasColumnType("text");
 
-                    b.HasKey("MemberId")
-                        .HasName("PRIMARY");
+                    b.HasKey("MemberId");
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("member", (string)null);
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("TaskSystemServer.Models.Memberprefernce", b =>
                 {
                     b.Property<int>("MemberId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("memberId");
 
                     b.Property<string>("Layout")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(25)
-                        .HasColumnType("varchar(25)")
-                        .HasColumnName("layout")
-                        .HasDefaultValueSql("'default'");
+                        .HasColumnType("text")
+                        .HasDefaultValue("default")
+                        .HasColumnName("layout");
 
                     b.Property<string>("Theme")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(24)
-                        .HasColumnType("varchar(24)")
-                        .HasColumnName("theme")
-                        .HasDefaultValueSql("'default'");
+                        .HasColumnType("text")
+                        .HasDefaultValue("default")
+                        .HasColumnName("theme");
 
-                    b.HasKey("MemberId")
-                        .HasName("PRIMARY");
+                    b.HasKey("MemberId");
 
-                    b.ToTable("memberprefernces", (string)null);
+                    b.ToTable("Memberprefernces");
                 });
 
             modelBuilder.Entity("TaskSystemServer.Models.Memberprofile", b =>
                 {
                     b.Property<int>("MemberId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("memberId");
 
                     b.Property<string>("ProfileUrl")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("text")
                         .HasColumnName("profileUrl");
 
-                    b.HasKey("MemberId")
-                        .HasName("PRIMARY");
+                    b.HasKey("MemberId");
 
-                    b.ToTable("memberprofile", (string)null);
+                    b.ToTable("Memberprofiles");
                 });
 
             modelBuilder.Entity("TaskSystemServer.Models.Registeredglobalevent", b =>
                 {
                     b.Property<int>("MemberId")
-                        .HasColumnType("int")
-                        .HasColumnName("memberId");
+                        .HasColumnType("integer");
 
                     b.Property<int>("EventId")
-                        .HasColumnType("int")
-                        .HasColumnName("eventId");
+                        .HasColumnType("integer");
 
                     b.Property<bool?>("IsReminded")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<int?>("RemindBeforeHours")
-                        .HasColumnType("int")
-                        .HasColumnName("remindBeforeHours");
+                        .HasColumnType("integer");
 
-                    b.HasKey("MemberId", "EventId")
-                        .HasName("PRIMARY")
-                        .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                    b.HasKey("MemberId", "EventId");
 
-                    b.HasIndex(new[] { "EventId" }, "eventId");
+                    b.HasIndex("EventId");
 
-                    b.ToTable("registeredglobalevent", (string)null);
+                    b.ToTable("Registeredglobalevents");
                 });
 
             modelBuilder.Entity("TaskSystemServer.Models.Task", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("taskId");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TaskId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TaskId"));
 
                     b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime")
-                        .HasColumnName("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<DateTime?>("DueDate")
-                        .HasColumnType("datetime")
+                        .HasColumnType("timestamp")
                         .HasColumnName("dueDate");
 
                     b.Property<TimeSpan?>("Duration")
-                        .HasColumnType("time")
-                        .HasColumnName("duration");
+                        .HasColumnType("interval");
 
                     b.Property<bool?>("IsDone")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("isDone")
-                        .HasDefaultValueSql("'0'");
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("isDone");
+
+                    b.Property<bool?>("IsReminded")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("MemberId")
-                        .HasColumnType("int")
-                        .HasColumnName("memberId");
+                        .HasColumnType("integer");
 
                     b.Property<string>("PriorityLevel")
-                        .HasColumnType("enum('high','low','medium')")
+                        .HasColumnType("text")
                         .HasColumnName("priorityLevel");
 
                     b.Property<int?>("RemindBeforeHours")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("remindBeforeHours");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.HasKey("TaskId")
-                        .HasName("PRIMARY");
+                    b.HasKey("TaskId");
 
-                    b.HasIndex(new[] { "MemberId" }, "memberId")
-                        .HasDatabaseName("memberId1");
+                    b.HasIndex("MemberId");
 
-                    b.ToTable("task", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -532,8 +484,7 @@ namespace TaskSystemServer.Migrations
                         .WithMany("Events")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("event_ibfk_1");
+                        .IsRequired();
 
                     b.Navigation("Member");
                 });
@@ -553,8 +504,7 @@ namespace TaskSystemServer.Migrations
                         .WithOne("Memberprefernce")
                         .HasForeignKey("TaskSystemServer.Models.Memberprefernce", "MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("memberprefernces_ibfk_1");
+                        .IsRequired();
 
                     b.Navigation("Member");
                 });
@@ -565,8 +515,7 @@ namespace TaskSystemServer.Migrations
                         .WithOne("Memberprofile")
                         .HasForeignKey("TaskSystemServer.Models.Memberprofile", "MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("memberprofile_ibfk_1");
+                        .IsRequired();
 
                     b.Navigation("Member");
                 });
@@ -577,15 +526,13 @@ namespace TaskSystemServer.Migrations
                         .WithMany("Registeredglobalevents")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("registeredglobalevent_ibfk_2");
+                        .IsRequired();
 
                     b.HasOne("TaskSystemServer.Models.Member", "Member")
                         .WithMany("Registeredglobalevents")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("registeredglobalevent_ibfk_1");
+                        .IsRequired();
 
                     b.Navigation("Event");
 
@@ -598,8 +545,7 @@ namespace TaskSystemServer.Migrations
                         .WithMany("Tasks")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("task_ibfk_1");
+                        .IsRequired();
 
                     b.Navigation("Member");
                 });

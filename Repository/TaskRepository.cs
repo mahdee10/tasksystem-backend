@@ -38,14 +38,21 @@ namespace TaskSystemServer.Repository
             return task;
         }
 
-        public async Task<Models.Task?> GetByTaskIdAsync(int id)
+        public async Task<Models.Task> GetByTaskIdAsync(int id)
         {
-            return await _context.Tasks.FindAsync(id);
+            var task = await _context.Tasks.FindAsync(id);
+            if (task == null)
+            {
+                // Return a new task or handle the situation (could throw an exception if necessary)
+                throw new KeyNotFoundException("Task not found");
+            }
+            return task;
         }
+
 
         public async Task<List<Models.Task>> GetByIdAsync(int id, QueryObject query)
         {
-            var tasks=  _context.Tasks.Where(e => e.MemberId == id).AsQueryable();
+            var tasks = _context.Tasks.Where(e => e.MemberId == id).AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.Title))
             {

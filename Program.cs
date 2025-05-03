@@ -11,7 +11,6 @@ using TaskSystemServer.Service;
 using TaskSystemServer.Settings;
 using Microsoft.Extensions.Hosting;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -44,20 +43,17 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
-
-builder.Services.AddDbContext<TasksystemContext>(
-    options =>
-    {
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-    }
-    );
+builder.Services.AddDbContext<TasksystemContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    // Use PostgreSQL instead of MySQL
+    options.UseNpgsql(connectionString);
+});
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
@@ -92,19 +88,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-//builder.Services.Configure<SmtpSettings>(options =>
-//{
-//    options.Server = Environment.GetEnvironmentVariable("SMTP_SERVER");
-//    options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT"));
-//    options.SenderName = Environment.GetEnvironmentVariable("SMTP_SENDER_NAME");
-//    options.SenderEmail = Environment.GetEnvironmentVariable("SMTP_SENDER_EMAIL");
-//    options.Username = Environment.GetEnvironmentVariable("SMTP_USERNAME");
-//    options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
-//});
-
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
-// Register EmailService and EventReminderService
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddHostedService<EventReminderService>();
 builder.Services.AddHostedService<TaskReminderService>();
@@ -129,12 +114,36 @@ builder.Services.AddCors(option =>
     option.AddDefaultPolicy(builder =>
     {
         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-
     });
 });
 
 var app = builder.Build();
 
+// Ensure roles exist on startup
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+
+    // Seed roles if they do not exist
+    await SeedRoles(roleManager);
+}
+
+async System.Threading.Tasks.Task SeedRoles(RoleManager<IdentityRole> roleManager)
+{
+    string[] roleNames = { "USER", "ADMIN", "MODERATOR" }; // Add your roles here
+
+    foreach (var roleName in roleNames)
+    {
+        var roleExist = await roleManager.RoleExistsAsync(roleName);
+        if (!roleExist)
+        {
+            var role = new IdentityRole(roleName);
+            await roleManager.CreateAsync(role);
+        }
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -144,13 +153,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.UseCors();
-
 app.MapControllers();
 
 app.Run();
