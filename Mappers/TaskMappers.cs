@@ -32,9 +32,9 @@ namespace TaskSystemServer.Mappers
                 MemberId = id,
                 Title = task.Title,
                 Description = task.Description,
-                Date = DateTime.Now,
-                DueDate = task.DueDate,
-                PriorityLevel= task.PriorityLevel,
+                Date = DateTime.UtcNow,
+                DueDate = task.DueDate?.ToUniversalTime(),
+                PriorityLevel = task.PriorityLevel,
                 //IsDone = task.IsDone,
                 RemindBeforeHours = task.RemindBeforeHours
             };

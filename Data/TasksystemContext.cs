@@ -82,7 +82,14 @@ namespace TaskSystemServer.Data
                 entity.Property(e => e.TaskId).HasColumnName("taskId");
                 entity.Property(e => e.Title).HasColumnName("title");
                 entity.Property(e => e.Description).HasColumnName("description");
-                entity.Property(e => e.DueDate).HasColumnType("timestamp").HasColumnName("dueDate");
+                entity.Property(e => e.DueDate)
+      .HasColumnType("timestamp with time zone")
+      .HasColumnName("dueDate");
+
+                entity.Property(e => e.Date)
+                      .HasColumnType("timestamp with time zone")
+                      .HasColumnName("date");
+
                 entity.Property(e => e.RemindBeforeHours).HasColumnName("remindBeforeHours");
                 entity.Property(e => e.PriorityLevel).HasColumnName("priorityLevel");
                 entity.Property(e => e.IsDone).HasColumnName("isDone").HasDefaultValue(false);
