@@ -22,7 +22,7 @@ The backend exposes a REST API that supports CRUD operations for tasks and event
 - Language: C#
 - Framework: ASP.NET Core Web API
 - Authentication: JWT Bearer Tokens
-- Database: Entity Framework Core + MySql (moved postgres for hosting reasons)
+- Database: Entity Framework Core + MySql (moved postgres for deploying reason)
 - Mailing: SMTP / MailKit
 
 ## 📦 Installation
