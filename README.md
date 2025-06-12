@@ -1,9 +1,3 @@
-
----
-
-### 🔧 **Backend README (`README.md`)**
-
-```markdown
 # 🔧 Task Manager Backend — ASP.NET Core API
 
 This is the backend of the Task Manager system, built with ASP.NET Core. It provides secure and scalable REST APIs for task/event management, user authentication, and global event subscriptions with email notifications.
